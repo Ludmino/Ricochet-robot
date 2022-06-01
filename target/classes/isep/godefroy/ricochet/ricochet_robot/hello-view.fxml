@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="200.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="isep.godefroy.ricochet.ricochet_robot.HelloController">
+         <children>
+            <Pane fx:id="menuScreen" minHeight="720.0" minWidth="1080.0" prefHeight="720.0" prefWidth="1080.0" styleClass="backgroundTitle" stylesheets="@style.css">
+               <children>
+                  <Button fx:id="buttonStart" layoutX="470.0" layoutY="293.0" mnemonicParsing="false" onAction="#onStartButtonClick" text="Jouer" textFill="#f200ff">
+                     <font>
+                        <Font name="Gabriola" size="48.0" />
+                     </font>
+                  </Button>
+                  <Pane fx:id="playerName" disable="true" prefHeight="720.0" prefWidth="1080.0" styleClass="playerSelector" stylesheets="@style.css" visible="false">
+                     <children>
+                        <TextField layoutX="279.0" layoutY="173.0" prefHeight="45.0" prefWidth="195.0" />
+                        <Label layoutX="279.0" layoutY="138.0" text="Nom du joueur 1" textFill="#00f224">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="player2Name" disable="true" layoutX="279.0" layoutY="304.0" prefHeight="45.0" prefWidth="195.0" />
+                        <Label fx:id="player2Label" disable="true" layoutX="279.0" layoutY="269.0" text="Nom du joueur 2" textFill="#00f224">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Label>
+                        <CheckBox fx:id="enablePlayer2" layoutX="279.0" layoutY="362.0" mnemonicParsing="false" onAction="#addPlayer2" text="Joueur 2">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </CheckBox>
+                        <Button layoutX="464.0" layoutY="387.0" mnemonicParsing="false" onAction="#startGame" text="Lancer la partie" textFill="#1e00ff">
+                           <font>
+                              <Font name="French Script MT" size="27.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </Pane>
+               </children>
+            </Pane>
+            <SplitPane fx:id="gameScreen" disable="true" dividerPositions="0.29797979797979796" minHeight="720.0" minWidth="1080.0" prefHeight="160.0" prefWidth="200.0" visible="false">
+              <items>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+               <children>
+                  <Label layoutX="21.0" layoutY="104.0" text="Temps restant :">
+                     <font>
+                        <Font size="22.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="timer" layoutX="178.0" layoutY="104.0" text="Temps">
+                     <font>
+                        <Font size="22.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="24.0" layoutY="276.0" text="Joueur 1 :">
+                     <font>
+                        <Font size="22.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="21.0" layoutY="308.0" text="Joueur 2 : ">
+                     <font>
+                        <Font size="22.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="24.0" layoutY="244.0" text="Score">
+                     <font>
+                        <Font size="22.0" />
+                     </font>
+                  </Label>
+                  <Button fx:id="timerButton" layoutX="21.0" layoutY="43.0" mnemonicParsing="false" onAction="#timer30" text="Commencer">
+                     <font>
+                        <Font size="22.0" />
+                     </font>
+                  </Button>
+               </children></AnchorPane>
+                <AnchorPane fx:id="gamePane" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" stylesheets="@style.css">
+               <children>
+                  <Pane fx:id="corner1" minHeight="360.0" minWidth="360.0" prefHeight="200.0" prefWidth="200.0" rotate="90.0" stylesheets="@style.css" />
+                  <Pane fx:id="corner3" layoutY="360.0" minHeight="360.0" minWidth="360.0" prefHeight="200.0" prefWidth="200.0" stylesheets="@style.css" />
+                  <Pane fx:id="corner4" layoutX="360.0" layoutY="360.0" minHeight="360.0" minWidth="360.0" prefHeight="200.0" prefWidth="200.0" rotate="270.0" stylesheets="@style.css" />
+                  <Pane fx:id="corner2" layoutX="360.0" minHeight="360.0" minWidth="360.0" prefHeight="200.0" prefWidth="200.0" rotate="180.0" />
+                  <GridPane fx:id="boardPane" layoutX="6.0" layoutY="8.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="720.0" minWidth="760.0" prefHeight="720.0" prefWidth="760.0">
+                  </GridPane>
+               </children></AnchorPane>
+              </items>
+            </SplitPane>
+         </children>
+      </AnchorPane>

@@ -1,0 +1,66 @@
+.backgroundTitle{
+    -fx-background-image: url("../../../../../../img/RicochetTitle.png");
+    -fx-background-size: contain;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+
+.playerSelector{
+    -fx-background-image: url("../../../../../../img/playerNumber.png");
+    -fx-background-size: contain;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+
+.backgroundColor{
+    -fx-background-color: grey;
+}
+
+.corner11{
+    -fx-background-image: url("../../../../../../img/coin11.png");
+    -fx-background-size: contain;
+    -fx-background-repeat: no-repeat;
+}
+
+.corner12{
+    -fx-background-image: url("../../../../../../img/coin12.png");
+    -fx-background-size: contain;
+    -fx-background-repeat: no-repeat;
+}
+
+
+.corner21{
+    -fx-background-image: url("../../../../../../img/coin21.png");
+    -fx-background-size: contain;
+    -fx-background-repeat: no-repeat;
+}
+
+.corner22{
+    -fx-background-image: url("../../../../../../img/coin22.png");
+    -fx-background-size: contain;
+    -fx-background-repeat: no-repeat;
+}
+
+.corner31{
+    -fx-background-image: url("../../../../../../img/coin31.png");
+    -fx-background-size: contain;
+    -fx-background-repeat: no-repeat;
+}
+
+.corner32{
+    -fx-background-image: url("../../../../../../img/coin32.png");
+    -fx-background-size: contain;
+    -fx-background-repeat: no-repeat;
+}
+
+.corner41{
+    -fx-background-image: url("../../../../../../img/coin41.png");
+    -fx-background-size: contain;
+    -fx-background-repeat: no-repeat;
+}
+
+.corner42{
+    -fx-background-image: url("../../../../../../img/coin42.png");
+    -fx-background-size: contain;
+    -fx-background-repeat: no-repeat;
+}
