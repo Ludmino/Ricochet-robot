@@ -1,10 +1,7 @@
 package isep.godefroy.ricochet.ricochet_robot;
 
 import javafx.scene.image.Image;
-import javafx.scene.layout.GridPane;
-
 import java.util.*;
-
 import static isep.godefroy.ricochet.ricochet_robot.Game.Status.*;
 import static isep.godefroy.ricochet.ricochet_robot.Token.Color.*;
 import java.util.Random;
@@ -16,7 +13,7 @@ public class Game {
     private static int[] listObjectif = {11,12,13,14,21,22,23,24,31,32,33,34,41,42,43,44,5};
     Integer[] coin= {1, 2, 3, 4};
     Integer[] typeCoin= {1, 2, 1, 2, 1, 2, 1, 2,};
-    int[][][][] coinPattern = {{{{0, 0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0, 0}, {1, 0, 0,12, 4, 3, 0, 0}, {0, 0, 0, 0, 0,43, 4, 0}, {0, 2, 34, 0, 3, 0, 0, 0}, {0, 0, 1, 2, 21, 0, 0, 0},{0, 0, 0, 0, 0, 0, 0, 0},{0, 0, 0, 2, 0, 0, 0, 0}},
+    int[][][][] coinPattern = {{{{0, 0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0, 0}, {1, 0, 0,12, 4, 3, 0, 0}, {0, 0, 0, 1, 0,43, 4, 0}, {0, 2, 34, 0, 3, 0, 0, 0}, {0, 0, 1, 2, 21, 0, 0, 0},{0, 0, 0, 0, 0, 0, 0, 0},{0, 0, 0, 2, 0, 0, 0, 0}},
             {{0, 0, 0, 0, 0, 0, 0, 0},{0, 0, 0,12, 4, 0, 0, 0},{3, 0, 0, 1, 0, 3, 0, 0},{0, 0, 0, 0, 2,21, 0, 0},{0, 0, 0, 0, 0, 0, 0, 0},{2,34, 0, 0, 0, 0, 3, 0},{0, 1, 0, 0, 0, 0,43, 4},{0, 0, 0, 0, 2, 0, 0, 0}}},
 
             {{{0, 0, 5, 0, 0, 0, 0, 0},{0, 0, 0, 0, 2, 23, 0, 0},{0, 32, 4, 0, 0, 1, 0, 0},{0, 1, 0, 0, 3, 0, 0, 0},{3, 0, 0, 0, 41, 4, 0, 0},{0, 0, 0, 0, 0, 0, 3, 0},{0, 0, 0, 0, 0, 2, 14, 0},{0, 0, 0, 2, 0, 0, 0, 0}},
@@ -198,7 +195,6 @@ public class Game {
     }
 
     public String processSelectTile(int col, int lig) {
-        System.out.println(boardTile[lig][col].getCenter());
         if (this.status == CHOOSE_TILE) {
             if (
                     (this.selectedRobot.getCol() != col)
@@ -225,7 +221,6 @@ public class Game {
                 setStatus(CHOOSE_ROBOT);
 
                 boolean win = isWin(this.selectedRobot.getLig(),this.selectedRobot.getCol(),this.selectedRobot.getColor());
-
                 if (win){
                     Token.Color[] liCouleur={RED,BLUE,GREEN,YELLOW};
                     for (int i = 0; i < liCouleur.length;i++){
@@ -234,7 +229,6 @@ public class Game {
                         boardTile[robot.getOriginalCol()][robot.getOriginalLigne()].setCenter(1);
                     }
                     return "WIN";
-
                 }
                 return "MOVE";
             }

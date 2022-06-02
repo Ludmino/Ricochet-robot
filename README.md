@@ -9,6 +9,4 @@ Celui qui annonce le plus bas nombre de coup en premier montre sa solution et re
 Les robots ne peuvent se déplacer qu'en ligne droite et ne peuvent s'arrêter que s'il y a un mur ou un robot.
 
 # Ce qu'il reste à faire
-- Faire un compteur de coup et l'afficher
-- Implémenter le timer
 - Des tests unitaires (encore et toujours)

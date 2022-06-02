@@ -1,6 +1,9 @@
 package isep.godefroy.ricochet.ricochet_robot;
 
+import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -9,20 +12,22 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
-
-import java.util.Arrays;
+import javafx.util.Duration;
 
 import static isep.godefroy.ricochet.ricochet_robot.Token.Color.*;
 
 public class HelloController {
-    private static final Integer STARTTIME = 15;
+    private static final Integer STARTTIME = 30;
     public final int TILE_SIZE = 44;
-    private Timeline timeline;
     private int player1score = 0;
     private int player2score = 0;
-
     private Integer timeSeconds = STARTTIME;
+    private static int nombreCoup = 0;
 
+    @FXML
+    private Label compteCoup;
+    @FXML
+    private Pane hideGame;
     @FXML
     private Pane winScreen;
     @FXML
@@ -69,6 +74,9 @@ public class HelloController {
     private Pane corner3;
     @FXML
     private Pane corner4;
+
+    @FXML
+    private Button timerButton;
 
     @FXML
     protected void onStartButtonClick() {
@@ -124,6 +132,8 @@ public class HelloController {
                             String status = Game.context.processSelectTile
                                     (lambdaCol, lambdaLig);
                             if ( "MOVE".equals(status)) {
+                                nombreCoup+=1;
+                                compteCoup.setText(String.valueOf(nombreCoup));
                                 updateSelectedRobotPosition();
                             } else if ( "WIN".equals(status)){
                                 win();
@@ -141,6 +151,7 @@ public class HelloController {
         addRobot(GREEN);
         addRobot(BLUE);
         addRobot(YELLOW);
+        timer.textProperty().bind(timerToolTipProperty);
     }
     public void randomObjectif(){
         imgObjectif.setImage(Game.newObjectif());
@@ -167,9 +178,21 @@ public class HelloController {
     }
 
     public void timer30(ActionEvent actionEvent){
+        getTimeline().setCycleCount(STARTTIME+1);
+        time.setSecond(31);
+        getTimeline().play();
+        hideGame.setOpacity(0.01);
+        timerButton.setVisible(false);
+        timerButton.setDisable(true);
     }
 
     public void win() {
+        hideGame.setVisible(true);
+        hideGame.setDisable(false);
+        timerButton.setVisible(true);
+        timerButton.setDisable(false);
+        nombreCoup=0;
+        compteCoup.setText(String.valueOf(nombreCoup));
         if (enablePlayer2.isSelected()) {
             player2win.setVisible(true);
             player2win.setDisable(false);
@@ -210,4 +233,31 @@ public class HelloController {
             GridPane.setConstraints(robot.getGui(), robot.getCol(), robot.getLig());
         }
     }
+
+    public static Time time = new Time(31);
+    public StringProperty timerToolTipProperty = new SimpleStringProperty();
+
+    Timeline timeline = new Timeline(
+            new KeyFrame(Duration.seconds(1),
+                    e -> {
+                        time.oneSecondPassed();
+                        hideGame.setVisible(true);
+                        hideGame.setDisable(false);
+                        timerToolTipProperty.set(time.getCurrentTime());
+                        if(time.getSecond()<=0){
+                            hideGame.setVisible(false);
+                            hideGame.setDisable(false);
+                            hideGame.setOpacity(1);
+                            timerToolTipProperty.set("Temps écoulé");
+                        }
+                    }));
+
+    public Time getTime() {
+        return this.time;
+    }
+
+    public Timeline getTimeline() {
+        return this.timeline;
+    }
+
 }
