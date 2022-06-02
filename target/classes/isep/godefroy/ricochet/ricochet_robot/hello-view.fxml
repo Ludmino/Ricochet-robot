@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
@@ -15,7 +16,7 @@
                   </Button>
                   <Pane fx:id="playerName" disable="true" prefHeight="720.0" prefWidth="1080.0" styleClass="playerSelector" stylesheets="@style.css" visible="false">
                      <children>
-                        <TextField layoutX="279.0" layoutY="173.0" prefHeight="45.0" prefWidth="195.0" />
+                        <TextField fx:id="player1Name" layoutX="279.0" layoutY="173.0" prefHeight="45.0" prefWidth="195.0" />
                         <Label layoutX="279.0" layoutY="138.0" text="Nom du joueur 1" textFill="#00f224">
                            <font>
                               <Font size="24.0" />
@@ -55,12 +56,12 @@
                         <Font size="22.0" />
                      </font>
                   </Label>
-                  <Label layoutX="24.0" layoutY="276.0" text="Joueur 1 :">
+                  <Label fx:id="player1Display" layoutX="24.0" layoutY="276.0" text="Joueur 1 :">
                      <font>
                         <Font size="22.0" />
                      </font>
                   </Label>
-                  <Label layoutX="21.0" layoutY="308.0" text="Joueur 2 : ">
+                  <Label fx:id="player2Display" disable="true" layoutX="21.0" layoutY="308.0" text="Joueur 2 : " visible="false">
                      <font>
                         <Font size="22.0" />
                      </font>
@@ -84,8 +85,19 @@
                   <Pane fx:id="corner2" layoutX="360.0" minHeight="360.0" minWidth="360.0" prefHeight="200.0" prefWidth="200.0" rotate="180.0" />
                   <GridPane fx:id="boardPane" layoutX="6.0" layoutY="8.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="720.0" minWidth="760.0" prefHeight="720.0" prefWidth="760.0">
                   </GridPane>
+                  <ImageView fx:id="imgObjectif" fitHeight="52.0" fitWidth="54.0" layoutX="333.0" layoutY="334.0" pickOnBounds="true" preserveRatio="true" />
                </children></AnchorPane>
               </items>
             </SplitPane>
+      <Pane fx:id="winScreen" disable="true" layoutX="202.0" layoutY="94.0" prefHeight="720.0" prefWidth="1080.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Button fx:id="player1win" layoutX="379.0" layoutY="334.0" mnemonicParsing="false" onAction="#player1won" prefHeight="52.0" prefWidth="121.0" text="Joueur 1" />
+            <Button fx:id="player2win" disable="true" layoutX="575.0" layoutY="334.0" mnemonicParsing="false" onAction="#player2won" prefHeight="52.0" prefWidth="121.0" text="Joueur 2" visible="false" />
+            <Label layoutX="446.0" layoutY="173.0" text="Gagnant ?">
+               <font>
+                  <Font name="Bell MT" size="44.0" />
+               </font>
+            </Label>
+         </children></Pane>
          </children>
       </AnchorPane>

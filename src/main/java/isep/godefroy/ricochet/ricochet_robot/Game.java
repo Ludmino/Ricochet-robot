@@ -1,14 +1,19 @@
 package isep.godefroy.ricochet.ricochet_robot;
 
+import javafx.scene.image.Image;
+import javafx.scene.layout.GridPane;
+
 import java.util.*;
 
 import static isep.godefroy.ricochet.ricochet_robot.Game.Status.*;
 import static isep.godefroy.ricochet.ricochet_robot.Token.Color.*;
+import java.util.Random;
 
 public class Game {
-
+    private static int objectif;
     public static Game context;
     public static final int SIZE = 16;
+    private static int[] listObjectif = {11,12,13,14,21,22,23,24,31,32,33,34,41,42,43,44,5};
     Integer[] coin= {1, 2, 3, 4};
     Integer[] typeCoin= {1, 2, 1, 2, 1, 2, 1, 2,};
     int[][][][] coinPattern = {{{{0, 0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0, 0}, {1, 0, 0,12, 4, 3, 0, 0}, {0, 0, 0, 0, 0,43, 4, 0}, {0, 2, 34, 0, 3, 0, 0, 0}, {0, 0, 1, 2, 21, 0, 0, 0},{0, 0, 0, 0, 0, 0, 0, 0},{0, 0, 0, 2, 0, 0, 0, 0}},
@@ -21,7 +26,7 @@ public class Game {
                     {{0, 0, 0, 3, 0, 0, 0, 0},{0, 0, 0, 44, 4, 0, 0, 0},{0, 0, 0, 0, 0, 0, 0, 0},{2, 31, 0, 0, 0, 0, 0, 0},{0, 1, 0, 0, 0, 0, 22, 4},{3, 0, 3, 0, 0, 0, 1, 0},{0, 2, 13, 0, 0, 0, 0, 0},{0, 0, 0, 0, 0, 2, 0, 0}}},
 
             {{{0, 0, 0, 0, 0, 11, 4, 0},{0, 0, 3, 0, 0, 1, 0, 0},{0, 0, 42, 4, 0, 0, 0, 0},{3, 0, 0, 0, 0, 0, 0, 0},{0, 0, 0, 0, 3, 0, 0, 0},{0, 0, 0, 2, 33, 0, 0, 0},{0, 0, 0, 0, 0, 2, 24, 0},{0, 0, 0, 0, 2, 0, 1, 0}},
-                    {{0, 0, 0, 0, 0, 0, 0, 0},{0, 0, 0, 0, 0, 0, 0, 0},{0, 3, 0, 0, 2, 24, 0, 0},{2, 33, 0, 0, 0, 0, 3, 0},{0, 0, 0, 0, 0, 0, 42, 2},{3, 0, 0, 0, 0, 0, 0, 0},{0, 0, 0, 11, 4, 0, 0, 0},{0, 0, 0, 1, 0, 2, 0, 0}}}};
+                    {{0, 0, 0, 0, 0, 0, 0, 0},{0, 0, 0, 0, 0, 0, 0, 0},{0, 3, 0, 0, 2, 24, 0, 0},{2, 33, 0, 0, 0, 1, 3, 0},{0, 0, 0, 0, 0, 0, 42, 4},{3, 0, 0, 0, 0, 0, 0, 0},{0, 0, 0, 11, 4, 0, 0, 0},{0, 0, 0, 1, 0, 2, 0, 0}}}};
 
     private Token selectedRobot;
     public Token getSelectedRobot() { return this.selectedRobot; }
@@ -32,7 +37,6 @@ public class Game {
     public Token getTarget() { return this.target; }
 
     Game() {
-
         robots = new HashMap<>();
         robots.put(RED, new Token(RED));
         robots.put(GREEN, new Token(GREEN));
@@ -46,10 +50,6 @@ public class Game {
     }
 
     public static void start() {
-        if (Game.context != null) {
-            throw new RuntimeException
-                    ("Impossible de lancer plusieurs fois la partie...");
-        }
         Game.context = new Game();
         Game.context.setStatus(CHOOSE_ROBOT);
         System.out.println("go");
@@ -162,6 +162,13 @@ public class Game {
         }
     }
 
+    public static Image newObjectif(){
+        Random random = new Random();
+        objectif=listObjectif[random.nextInt(16)];
+        Image objectifVisuel = new Image(String.valueOf(objectif)+".png");
+        return objectifVisuel;
+    }
+
     public int[][] rotate(int[][] coin){
         int[][] newCoin = new int[8][8];
         for (int i = 0; i<coin[0].length;i++){
@@ -191,6 +198,7 @@ public class Game {
     }
 
     public String processSelectTile(int col, int lig) {
+        System.out.println(boardTile[lig][col].getCenter());
         if (this.status == CHOOSE_TILE) {
             if (
                     (this.selectedRobot.getCol() != col)
@@ -215,6 +223,19 @@ public class Game {
                 boardTile[lig][col].setCenter(1);
                 // Action suivante attendue : choisir un robot
                 setStatus(CHOOSE_ROBOT);
+
+                boolean win = isWin(this.selectedRobot.getLig(),this.selectedRobot.getCol(),this.selectedRobot.getColor());
+
+                if (win){
+                    Token.Color[] liCouleur={RED,BLUE,GREEN,YELLOW};
+                    for (int i = 0; i < liCouleur.length;i++){
+                        Token robot = Game.context.getRobots().get(liCouleur[i]);
+                        boardTile[robot.getLig()][robot.getCol()].setCenter(0);
+                        boardTile[robot.getOriginalCol()][robot.getOriginalLigne()].setCenter(1);
+                    }
+                    return "WIN";
+
+                }
                 return "MOVE";
             }
         }
@@ -280,4 +301,37 @@ public class Game {
     public static void initalizeRobot(int ligne, int col){
         boardTile[ligne][col].setCenter(1);
     }
+
+    public boolean isWin(int ligne, int colonne, Token.Color couleur){
+        Integer[] objR = {11,21,31,41,5};
+        List<Integer> objRouge = Arrays.asList(objR);
+        Integer[] objB = {12,22,32,42,5};
+        List<Integer> objBleu = Arrays.asList(objB);
+        Integer[] objV = {13,23,33,43,5};
+        List<Integer> objVert = Arrays.asList(objV);
+        Integer[] objJ = {14,24,34,44,5};
+        List<Integer> objJaune = Arrays.asList(objJ);
+        if (objectif==boardTile[ligne][colonne].getObjectif()){
+                if (objRouge.contains(objectif) && couleur==RED){
+                    System.out.println("Victoire Rouge");
+                    return true;
+                } else
+                if (objBleu.contains(objectif) && couleur==BLUE){
+                    System.out.println("Victoire Bleu");
+                    return true;
+                } else
+                if (objVert.contains(objectif) && couleur==GREEN){
+                    System.out.println("Victoire Vert");
+                    return true;
+                } else
+                if (objJaune.contains(objectif) && couleur==YELLOW){
+                    System.out.println("Victoire Jaune");
+                    return true;
+                 } else {
+                    System.out.println("Mauvais pion");
+                }
+        }
+        return false;
+    }
+
 }

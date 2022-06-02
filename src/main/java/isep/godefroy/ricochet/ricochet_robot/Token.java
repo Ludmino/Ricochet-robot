@@ -7,14 +7,38 @@ import javafx.beans.property.StringProperty;
 import javafx.scene.Node;
 import javafx.scene.image.ImageView;
 
+import java.util.Arrays;
 import java.util.Random;
 
 public class Token {
 
+    private int originalLigne;
+    private int originalCol;
+
     public Token(Color color) {
         this.color = color;
+        int[] pos = generateRandom();
+        setPosition( pos[0], pos[1]);
+        originalLigne = pos[0];
+        originalCol = pos[1];
+    }
+
+    public void resetPosition(){
+        setPosition(originalLigne,originalCol);
+    }
+
+    private int[] generateRandom(){
         Random random = new Random();
-        setPosition( random.nextInt(Game.SIZE), random.nextInt(Game.SIZE) );
+        int[] spawn = new int[2];
+        int ligne = random.nextInt(Game.SIZE);
+        int colonne = random.nextInt(Game.SIZE);
+        while ((ligne==7 || ligne == 8) && (colonne==7 || colonne==8)){
+            ligne = random.nextInt(Game.SIZE);
+            colonne = random.nextInt(Game.SIZE);
+        }
+        spawn[0]=ligne;
+        spawn[1]=colonne;
+        return spawn;
     }
 
     private Color color;
@@ -28,6 +52,13 @@ public class Token {
     public void setPosition(int col, int lig) {
         this.col = col;
         this.lig = lig;
+    }
+
+    public int getOriginalLigne() {
+        return originalLigne;
+    }
+    public int getOriginalCol() {
+        return originalCol;
     }
     public int getCol() { return col; }
     public int getLig() { return lig; }

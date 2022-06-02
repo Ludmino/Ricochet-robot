@@ -18,8 +18,15 @@ public class HelloController {
     private static final Integer STARTTIME = 15;
     public final int TILE_SIZE = 44;
     private Timeline timeline;
+    private int player1score = 0;
+    private int player2score = 0;
 
     private Integer timeSeconds = STARTTIME;
+
+    @FXML
+    private Pane winScreen;
+    @FXML
+    private Button player2win;
 
     @FXML
     public GridPane boardPane;
@@ -38,9 +45,18 @@ public class HelloController {
     @FXML
     private TextField player2Name;
     @FXML
+    private TextField player1Name;
+    @FXML
     private CheckBox enablePlayer2;
     @FXML
     private SplitPane gameScreen;
+    @FXML
+    private ImageView imgObjectif;
+
+    @FXML
+    private Label player1Display;
+    @FXML
+    private Label player2Display;
 
     @FXML
     private AnchorPane gamePane;
@@ -75,7 +91,14 @@ public class HelloController {
         menuScreen.setVisible(false);
         gameScreen.setDisable(false);
         gameScreen.setVisible(true);
+        player1Display.setText("Joueur "+player1Name.getText()+" : "+player1score);
+        if (enablePlayer2.isSelected()){
+            player2Display.setVisible(true);
+            player2Display.setDisable(false);
+            player2Display.setText("Joueur "+player2Name.getText()+" : "+player2score);
+        }
         timer.setText(timeSeconds.toString());
+
         visualBoard();
     }
 
@@ -88,7 +111,7 @@ public class HelloController {
         corner3.getStyleClass().add(Selection[2]);
         corner4.getStyleClass().add(Selection[3]);
         Image tile = new Image("cell.png", TILE_SIZE, TILE_SIZE, false, true);
-
+        randomObjectif();
         // ... "cell.png" doit être placé à la racine de "resources/" (sinon PB)
         for (int col = 0; col < Game.SIZE; col ++) {
             for (int lig = 0; lig < Game.SIZE; lig++) {
@@ -102,7 +125,10 @@ public class HelloController {
                                     (lambdaCol, lambdaLig);
                             if ( "MOVE".equals(status)) {
                                 updateSelectedRobotPosition();
-                            } else if (status != null) {
+                            } else if ( "WIN".equals(status)){
+                                win();
+                            }
+                            else if (status != null) {
                                 System.out.println("Déplacement en diagonale interdit");
                             }
                         });
@@ -115,7 +141,9 @@ public class HelloController {
         addRobot(GREEN);
         addRobot(BLUE);
         addRobot(YELLOW);
-
+    }
+    public void randomObjectif(){
+        imgObjectif.setImage(Game.newObjectif());
     }
 
     private void addRobot(Token.Color color) {
@@ -139,5 +167,47 @@ public class HelloController {
     }
 
     public void timer30(ActionEvent actionEvent){
+    }
+
+    public void win() {
+        if (enablePlayer2.isSelected()) {
+            player2win.setVisible(true);
+            player2win.setDisable(false);
+        }
+        winScreen.setDisable(false);
+        winScreen.setVisible(true);
+        gameScreen.setVisible(false);
+        gameScreen.setDisable(true);
+    }
+
+    public void player1won(ActionEvent actionEvent) {
+        player1score+=1;
+        gameScreen.setDisable(false);
+        gameScreen.setVisible(true);
+        winScreen.setVisible(false);
+        winScreen.setDisable(true);
+        player1Display.setText("Joueur "+player1Name.getText()+" : "+player1score);
+        randomObjectif();
+        resetPosition();
+    }
+
+    public void player2won(ActionEvent actionEvent) {
+        player2score+=1;
+        player2Display.setText("Joueur "+player2Name.getText()+" : "+player2score);
+        gameScreen.setDisable(false);
+        gameScreen.setVisible(true);
+        winScreen.setVisible(false);
+        winScreen.setDisable(true);
+        randomObjectif();
+        resetPosition();
+    }
+
+    public void resetPosition(){
+        Token.Color[] liCouleur={RED,BLUE,GREEN,YELLOW};
+        for (int i = 0; i < liCouleur.length;i++){
+            Token robot = Game.context.getRobots().get(liCouleur[i]);
+            robot.resetPosition();
+            GridPane.setConstraints(robot.getGui(), robot.getCol(), robot.getLig());
+        }
     }
 }
