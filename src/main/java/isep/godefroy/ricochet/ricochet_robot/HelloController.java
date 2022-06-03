@@ -106,7 +106,6 @@ public class HelloController {
             player2Display.setText("Joueur "+player2Name.getText()+" : "+player2score);
         }
         timer.setText(timeSeconds.toString());
-
         visualBoard();
     }
 
@@ -124,7 +123,7 @@ public class HelloController {
         for (int col = 0; col < Game.SIZE; col ++) {
             for (int lig = 0; lig < Game.SIZE; lig++) {
                 ImageView tileGui = new ImageView(tile);
-                tileGui.setOpacity(0.1);
+                tileGui.setOpacity(0.01);
                 final int lambdaCol = col;
                 final int lambdaLig = lig;
                 tileGui.setOnMouseClicked

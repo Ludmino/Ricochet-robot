@@ -1,13 +1,7 @@
 package isep.godefroy.ricochet.ricochet_robot;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import javafx.scene.Node;
 import javafx.scene.image.ImageView;
-
-import java.util.Arrays;
 import java.util.Random;
 
 public class Token {
@@ -43,8 +37,6 @@ public class Token {
 
     private Color color;
     public Color getColor() { return this.color; }
-
-    // * Position
 
     public int col;
     public int lig;

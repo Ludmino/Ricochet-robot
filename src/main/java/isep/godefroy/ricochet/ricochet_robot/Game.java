@@ -33,16 +33,12 @@ public class Game {
     private Token target;
     public Token getTarget() { return this.target; }
 
-    Game() {
+    public Game() {
         robots = new HashMap<>();
         robots.put(RED, new Token(RED));
         robots.put(GREEN, new Token(GREEN));
         robots.put(BLUE, new Token(BLUE));
         robots.put(YELLOW, new Token(YELLOW));
-
-        Token.Color[] colors = Token.Color.values();
-        int randomColorIndex = ( new Random() ).nextInt( colors.length );
-        target = new Token( colors[randomColorIndex] );
 
     }
 
@@ -149,6 +145,26 @@ public class Game {
                 else if (finalBoard[i][j]==4){
                     gauche = 1;
                     boardTile[i][j] = new Tile(haut,bas,gauche,droite,centre,objectif);
+                } else if (finalBoard[i][j]==5){
+                    droite = 1;
+                    haut =1;
+                    objectif = 5;
+                    boardTile[i][j] = new Tile(haut,bas,gauche,droite,centre,objectif);
+                } else if (finalBoard[i][j]==6){
+                    droite = 1;
+                    bas =1;
+                    objectif = 5;
+                    boardTile[i][j] = new Tile(haut,bas,gauche,droite,centre,objectif);
+                } else if (finalBoard[i][j]==7){
+                    gauche = 1;
+                    bas =1;
+                    objectif = 5;
+                    boardTile[i][j] = new Tile(haut,bas,gauche,droite,centre,objectif);
+                } else if (finalBoard[i][j]==8){
+                    gauche = 1;
+                    haut =1;
+                    objectif = 5;
+                    boardTile[i][j] = new Tile(haut,bas,gauche,droite,centre,objectif);
                 } else if (finalBoard[i][j]!=0){
                     objectif = finalBoard[i][j];
                     boardTile[i][j] = new Tile(haut,bas,gauche,droite,centre,objectif);
@@ -161,7 +177,7 @@ public class Game {
 
     public static Image newObjectif(){
         Random random = new Random();
-        objectif=listObjectif[random.nextInt(16)];
+        objectif=listObjectif[random.nextInt(17)];
         Image objectifVisuel = new Image(String.valueOf(objectif)+".png");
         return objectifVisuel;
     }
@@ -178,6 +194,14 @@ public class Game {
                     newCoin[j][i]=4;
                 } else if (coin[7-i][j]==4){
                     newCoin[j][i]=1;
+                } else if (coin[7-i][j]==5){
+                    newCoin[j][i]=6;
+                } else if (coin[7-i][j]==6){
+                    newCoin[j][i]=7;
+                } else if (coin[7-i][j]==7){
+                    newCoin[j][i]=8;
+                } else if (coin[7-i][j]==8){
+                    newCoin[j][i]=5;
                 } else {
                     newCoin[j][i]=coin[7-i][j];
                 }
