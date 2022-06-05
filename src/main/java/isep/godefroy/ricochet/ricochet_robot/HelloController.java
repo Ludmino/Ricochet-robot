@@ -24,6 +24,7 @@ public class HelloController {
     private Integer timeSeconds = STARTTIME;
     private static int nombreCoup = 0;
 
+    //Gestion de tous les éléments FXML nécessaire à l'affichage
     @FXML
     private Label compteCoup;
     @FXML
@@ -80,6 +81,7 @@ public class HelloController {
 
     @FXML
     protected void onStartButtonClick() {
+        //Bouton du premier écran
         buttonStart.setDisable(true);
         buttonStart.setVisible(false);
         playerName.setVisible(true);
@@ -88,6 +90,7 @@ public class HelloController {
 
     @FXML
     protected void addPlayer2(){
+        //Checkbox pour activer ou désactiver un deuxième joueur
         boolean disable = enablePlayer2.isSelected();
         player2Label.setDisable(!disable);
         player2Name.setDisable(!disable);
@@ -95,6 +98,7 @@ public class HelloController {
 
     @FXML
     protected void startGame(){
+        //Bouton pour lancer la partie sur le deuxième écran
         menuScreen.setDisable(true);
         menuScreen.setVisible(false);
         gameScreen.setDisable(false);
@@ -110,6 +114,7 @@ public class HelloController {
     }
 
     protected void visualBoard(){
+        //On crée le baord visuel, on va tirer les 4 coins du plateau pour affichage
         Game game = new Game();
         game.start();
         String[] Selection = game.newBoard();
@@ -118,8 +123,10 @@ public class HelloController {
         corner3.getStyleClass().add(Selection[2]);
         corner4.getStyleClass().add(Selection[3]);
         Image tile = new Image("cell.png", TILE_SIZE, TILE_SIZE, false, true);
+        //On tire l'objectif au sort
         randomObjectif();
         // ... "cell.png" doit être placé à la racine de "resources/" (sinon PB)
+        //On réutilise le même affichage que celui de l'amorce, on met juste une opacité de 0.01 aux case, on ne veut pas les voir
         for (int col = 0; col < Game.SIZE; col ++) {
             for (int lig = 0; lig < Game.SIZE; lig++) {
                 ImageView tileGui = new ImageView(tile);
@@ -152,11 +159,14 @@ public class HelloController {
         addRobot(YELLOW);
         timer.textProperty().bind(timerToolTipProperty);
     }
+
+    //On tire au sort un objectif
     public void randomObjectif(){
         imgObjectif.setImage(Game.newObjectif());
     }
 
     private void addRobot(Token.Color color) {
+        //On ajoute un robot
         Token robot = Game.context.getRobots().get(color);
         ImageView robotGui = new ImageView( new Image(
                 color.name() + "_robot.png",
@@ -177,6 +187,7 @@ public class HelloController {
     }
 
     public void timer30(ActionEvent actionEvent){
+        //On lance le timer et sa timeline
         getTimeline().setCycleCount(STARTTIME+1);
         time.setSecond(31);
         getTimeline().play();
@@ -186,6 +197,7 @@ public class HelloController {
     }
 
     public void win() {
+        //On change l'écran après victoire
         hideGame.setVisible(true);
         hideGame.setDisable(false);
         timerButton.setVisible(true);
@@ -203,6 +215,7 @@ public class HelloController {
     }
 
     public void player1won(ActionEvent actionEvent) {
+        //Bouton du choix du gagnant
         player1score+=1;
         gameScreen.setDisable(false);
         gameScreen.setVisible(true);
@@ -214,6 +227,8 @@ public class HelloController {
     }
 
     public void player2won(ActionEvent actionEvent) {
+        //Bouton du choix du gagnant
+        //Activé et visible seulement si deux joueur
         player2score+=1;
         player2Display.setText("Joueur "+player2Name.getText()+" : "+player2score);
         gameScreen.setDisable(false);
@@ -225,6 +240,7 @@ public class HelloController {
     }
 
     public void resetPosition(){
+        //On reset la position des robots après victoire
         Token.Color[] liCouleur={RED,BLUE,GREEN,YELLOW};
         for (int i = 0; i < liCouleur.length;i++){
             Token robot = Game.context.getRobots().get(liCouleur[i]);
@@ -233,6 +249,7 @@ public class HelloController {
         }
     }
 
+    //On gère l'affichage du timer
     public static Time time = new Time(31);
     public StringProperty timerToolTipProperty = new SimpleStringProperty();
 

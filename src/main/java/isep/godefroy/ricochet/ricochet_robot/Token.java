@@ -6,6 +6,8 @@ import java.util.Random;
 
 public class Token {
 
+    //On reprend le token proposé dans l'amorce, on ajoute juste une position original, et on vérifie que le pion ne puisse pas
+    //apparaitre au centre du plateau
     private int originalLigne;
     private int originalCol;
 
@@ -22,6 +24,7 @@ public class Token {
     }
 
     private int[] generateRandom(){
+        //On empêche le robot d'apparaitre au centre
         Random random = new Random();
         int[] spawn = new int[2];
         int ligne = random.nextInt(Game.SIZE);

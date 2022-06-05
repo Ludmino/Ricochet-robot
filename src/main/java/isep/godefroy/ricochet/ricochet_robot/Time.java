@@ -1,6 +1,7 @@
 package isep.godefroy.ricochet.ricochet_robot;
 
 public class Time {
+    //Classe servant au chrono
     private int second;
 
     public Time(int second) {

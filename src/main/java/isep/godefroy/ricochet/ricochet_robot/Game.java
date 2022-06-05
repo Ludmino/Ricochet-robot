@@ -13,6 +13,7 @@ public class Game {
     private static int[] listObjectif = {11,12,13,14,21,22,23,24,31,32,33,34,41,42,43,44,5};
     Integer[] coin= {1, 2, 3, 4};
     Integer[] typeCoin= {1, 2, 1, 2, 1, 2, 1, 2,};
+    //On encode les différents coins
     int[][][][] coinPattern = {{{{0, 0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0, 0}, {1, 0, 0,12, 4, 3, 0, 0}, {0, 0, 0, 1, 0,43, 4, 0}, {0, 2, 34, 0, 3, 0, 0, 0}, {0, 0, 1, 2, 21, 0, 0, 0},{0, 0, 0, 0, 0, 0, 0, 0},{0, 0, 0, 2, 0, 0, 0, 0}},
             {{0, 0, 0, 0, 0, 0, 0, 0},{0, 0, 0,12, 4, 0, 0, 0},{3, 0, 0, 1, 0, 3, 0, 0},{0, 0, 0, 0, 2,21, 0, 0},{0, 0, 0, 0, 0, 0, 0, 0},{2,34, 0, 0, 0, 0, 3, 0},{0, 1, 0, 0, 0, 0,43, 4},{0, 0, 0, 0, 2, 0, 0, 0}}},
 
@@ -33,6 +34,7 @@ public class Game {
     private Token target;
     public Token getTarget() { return this.target; }
 
+    //On ajoute les robots au plateau et dans une liste
     public Game() {
         robots = new HashMap<>();
         robots.put(RED, new Token(RED));
@@ -42,6 +44,7 @@ public class Game {
 
     }
 
+    //On lance la partie
     public static void start() {
         Game.context = new Game();
         Game.context.setStatus(CHOOSE_ROBOT);
@@ -54,6 +57,7 @@ public class Game {
         this.status = status;
     }
 
+    //On gère les status de la parties
     public enum Status {
         CHOOSE_ROBOT("Cliquez sur le robot à déplacer"),
         CHOOSE_TILE("Cliquez sur la case destination");
@@ -65,6 +69,7 @@ public class Game {
     private int[][][] partialBoard = new int[4][][];
 
     public String[] newBoard(){
+        //On tire au sort les coins du plateau qui seront utilisés et on les affiches
         List<Integer> intCoin = Arrays.asList(coin);
         Collections.shuffle(intCoin);
         intCoin.toArray(coin);
@@ -85,6 +90,7 @@ public class Game {
     private int[][] finalBoard = new int[16][16];
 
     public void generateBoard(){
+        //On utilise les coins 8*8 tirés pour en faire un plateau de 16*16
         partialBoard[0]=rotate(partialBoard[0]);
         partialBoard[1]=rotate(rotate(partialBoard[1]));
         partialBoard[3]=rotate(rotate(rotate(partialBoard[3])));
@@ -106,6 +112,7 @@ public class Game {
     public static Tile[][] boardTile = new Tile[16][16];
 
     public void createTiles(){
+        //On transforme notre plateau de 16*16 en list bidimensionel d'éléments Tiles qui permettront de gérer collisions et objectifs
         System.out.println(Arrays.deepToString(finalBoard));
         for (int i=0;i<16;i++){
             for (int j=0;j<16;j++){
@@ -176,6 +183,7 @@ public class Game {
     }
 
     public static Image newObjectif(){
+        //On tire au sort un objectif et on le renvoie pour affichage
         Random random = new Random();
         objectif=listObjectif[random.nextInt(17)];
         Image objectifVisuel = new Image(String.valueOf(objectif)+".png");
@@ -183,6 +191,9 @@ public class Game {
     }
 
     public int[][] rotate(int[][] coin){
+        //Les coins du plateau étant tous encodé avec le mur extérieur en bas à droite, il est nécessaire d'effectuer 1 ou plusieurs
+        //rotations pour les utiliser correctement
+        //Cette fonction sert à pivoter les matrices 8*8 de 90°
         int[][] newCoin = new int[8][8];
         for (int i = 0; i<coin[0].length;i++){
             for (int j = 0; j<coin[i].length;j++){
@@ -211,6 +222,7 @@ public class Game {
     }
 
     public void processSelectRobot(Token.Color color) {
+        //On gère la séléction du robot
         if (this.status == CHOOSE_ROBOT) {
             this.selectedRobot = this.robots.get(color);
             // Action suivante attendue : choisir la case cible
@@ -219,6 +231,7 @@ public class Game {
     }
 
     public String processSelectTile(int col, int lig) {
+        //On gère le choix des cases, si un robot a été choisi, on le fait se déplacer
         if (this.status == CHOOSE_TILE) {
             if (
                     (this.selectedRobot.getCol() != col)
@@ -244,6 +257,7 @@ public class Game {
                 // Action suivante attendue : choisir un robot
                 setStatus(CHOOSE_ROBOT);
 
+                //On vérifie s'il y a victoire après chaque déplacement
                 boolean win = isWin(this.selectedRobot.getLig(),this.selectedRobot.getCol(),this.selectedRobot.getColor());
                 if (win){
                     Token.Color[] liCouleur={RED,BLUE,GREEN,YELLOW};
@@ -261,6 +275,7 @@ public class Game {
     }
 
     public int deplacementBas(int ligne, int col){
+        //Fonction de déplacement en bas
         if (boardTile[ligne][col].getDown()==1){
             return ligne;
         }
@@ -275,6 +290,7 @@ public class Game {
     }
 
     public int deplacementHaut(int ligne, int col){
+        //Fonction de déplacement en haut
         if (boardTile[ligne][col].getUp()==1){
             return ligne;
         }
@@ -289,6 +305,7 @@ public class Game {
     }
 
     public int deplacementGauche(int ligne, int col){
+        //Fonction de déplacement à gauche
         if (boardTile[ligne][col].getLeft()==1){
             return col;
         }
@@ -303,6 +320,7 @@ public class Game {
     }
 
     public int deplacementDroite(int ligne, int col){
+        //Fonction de déplacement à droite
         if (boardTile[ligne][col].getRight()==1){
             return col;
         }
@@ -316,11 +334,15 @@ public class Game {
         return 15;
     }
 
+    //On ajoute les robots sur le plateau de Tile
     public static void initalizeRobot(int ligne, int col){
         boardTile[ligne][col].setCenter(1);
     }
 
     public boolean isWin(int ligne, int colonne, Token.Color couleur){
+        //On vérifie si la case sur lequel le robot arrive a un objectif qui correspond à l'objectif atteint
+        //Si ça correspond, on vérifie ensuite si l'objectif sur lequel le robot est correspond à la couleur du robot
+        //Si oui victoire, sinon rien
         Integer[] objR = {11,21,31,41,5};
         List<Integer> objRouge = Arrays.asList(objR);
         Integer[] objB = {12,22,32,42,5};

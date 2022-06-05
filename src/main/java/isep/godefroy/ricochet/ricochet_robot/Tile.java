@@ -8,6 +8,9 @@ public class Tile {
     protected int right;
     protected int center;
 
+    //Up, down, left, right = murs en haut, bas, gauche, droite
+    //centre = robot au centre
+    //Objectif = objectif de la case
     public Tile(int up, int down, int left, int right, int center, int objectif) {
         this.up = up;
         this.down = down;
